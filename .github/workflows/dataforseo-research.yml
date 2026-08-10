@@ -23,7 +23,7 @@ on:
       - '.github/workflows/dataforseo-research.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   research:
@@ -44,6 +44,18 @@ jobs:
           test -n "$DATAFORSEO_PASSWORD" || (echo 'Missing DATAFORSEO_PASSWORD secret' && exit 1)
       - name: Run market research
         run: python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
+      - name: Publish latest normalized results
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p outputs/latest
+          find outputs -maxdepth 1 -type f \( -name '*.csv' -o -name '*.md' -o -name '*.json' \) -exec cp {} outputs/latest/ \;
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add outputs/latest
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update latest market research results'
+            git push
+          fi
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
