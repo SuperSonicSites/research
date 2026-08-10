@@ -1,0 +1,46 @@
+name: DataForSEO Market Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      config_path:
+        description: Research config path
+        required: true
+        default: configs/farmer_market.json
+  pull_request:
+    paths:
+      - 'research.py'
+      - 'configs/**'
+      - 'requirements.txt'
+      - '.github/workflows/dataforseo-research.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    env:
+      DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
+      DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Validate secrets
+        run: |
+          test -n "$DATAFORSEO_LOGIN" || (echo 'Missing DATAFORSEO_LOGIN secret' && exit 1)
+          test -n "$DATAFORSEO_PASSWORD" || (echo 'Missing DATAFORSEO_PASSWORD secret' && exit 1)
+      - name: Run market research
+        run: python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-research-results-${{ github.run_id }}
+          path: outputs/
+          if-no-files-found: warn
+          retention-days: 30
