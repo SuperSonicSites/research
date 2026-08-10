@@ -7,6 +7,14 @@ on:
         description: Research config path
         required: true
         default: configs/farmer_market.json
+  push:
+    branches:
+      - main
+    paths:
+      - 'research.py'
+      - 'configs/**'
+      - 'requirements.txt'
+      - '.github/workflows/dataforseo-research.yml'
   pull_request:
     paths:
       - 'research.py'
