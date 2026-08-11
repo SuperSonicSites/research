@@ -1,0 +1,23 @@
+{
+  "final_round": "Round 7",
+  "status": "decision-grade first-pass",
+  "dataforseo_v5_api_cost_usd": 2.9076,
+  "rounds": [
+    {"round": 0, "result": "FAIL", "finding": "Broad keyword expansion caused severe semantic contamination."},
+    {"round": 1, "result": "FAIL", "finding": "Curated expansion exposed one-task-per-call API constraint."},
+    {"round": 2, "result": "FAIL", "finding": "Per-seed fix exposed shared account rate limits."},
+    {"round": 3, "result": "FAIL", "finding": "Overlapping Actions runs shared the same DataForSEO quota."},
+    {"round": 4, "result": "PASS HARNESS", "finding": "Research execution isolated/serialized; secrets and API path proven."},
+    {"round": 5, "result": "PASS DATA / FAIL PRECISION", "finding": "All 29 niches completed with native intent/deduping; manual audit caught State Farm, Machine Shed, semi-tractor, grain-bin-home and similar traps."},
+    {"round": 6, "result": "PASS PRECISION", "finding": "Offline semantic cleanup, captive-brand split, commercial-ag filters and custom semantic dedupe removed known contamination without another API bill."},
+    {"round": 7, "result": "PASS UNDERWRITING", "finding": "Buyer-capacity and lead-buying gates integrated. Only markets with credible large-buyer paths receive GO/STRONG TEST."}
+  ],
+  "acceptance_checks": {
+    "semantic_traps_removed": true,
+    "captive_brand_demand_separated": true,
+    "broad_tractor_demand_separated": true,
+    "semantic_deduping": true,
+    "top_candidates_manually_audited": true,
+    "buyer_capacity_gate": true
+  }
+}
