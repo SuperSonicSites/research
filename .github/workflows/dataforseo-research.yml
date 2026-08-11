@@ -9,20 +9,10 @@ on:
         default: configs/farmer_market.json
   issues:
     types: [opened]
-  push:
-    branches:
-      - main
-    paths:
-      - 'research.py'
-      - 'configs/**'
-      - 'requirements.txt'
-      - '.github/workflows/dataforseo-research.yml'
-  pull_request:
-    paths:
-      - 'research.py'
-      - 'configs/**'
-      - 'requirements.txt'
-      - '.github/workflows/dataforseo-research.yml'
+
+concurrency:
+  group: dataforseo-market-research
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -59,7 +49,7 @@ jobs:
           python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
           echo 'research_completed=true' >> outputs/latest/run_status.txt
       - name: Copy normalized results
-        if: success() && github.event_name != 'pull_request'
+        if: success()
         run: |
           RESULT_DIR=$(find outputs -mindepth 1 -maxdepth 1 -type d ! -name latest | sort | tail -1)
           test -n "$RESULT_DIR" || (echo 'No timestamped result directory found' && exit 1)
@@ -70,13 +60,14 @@ jobs:
           cp "$RESULT_DIR"/eval.json outputs/latest/
           cp "$RESULT_DIR"/report.md outputs/latest/
       - name: Persist run status and latest results
-        if: always() && github.event_name != 'pull_request'
+        if: always()
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -f outputs/latest
           if ! git diff --cached --quiet; then
             git commit -m 'Update latest market research status/results'
+            git pull --rebase origin main
             git push
           fi
       - name: Upload results
