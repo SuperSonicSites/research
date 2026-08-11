@@ -8,6 +8,8 @@ on:
         description: Research config path
         required: true
         default: configs/farmer_market.json
+  issues:
+    types: [opened]
   push:
     branches:
       - main
