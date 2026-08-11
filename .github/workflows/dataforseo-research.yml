@@ -1,5 +1,6 @@
 name: DataForSEO Market Research
 
+# Manual retrigger marker: 2026-08-10
 on:
   workflow_dispatch:
     inputs:
