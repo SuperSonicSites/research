@@ -1,5 +1,6 @@
-run_id=31445995818
-event=push
-sha=b8b3b7a3f9e0c027cf11c703e9728235d4a788a1
-dataforseo_login_present=false
-dataforseo_password_present=false
+run_id=31446822573
+event=issues
+sha=e4963cd7a9a3f4200451e84c30819e117c1c9993
+dataforseo_login_present=true
+dataforseo_password_present=true
+research_completed=true
