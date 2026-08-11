@@ -1,6 +1,5 @@
 name: DataForSEO Market Research
 
-# Manual retrigger marker: 2026-08-10
 on:
   workflow_dispatch:
     inputs:
@@ -31,6 +30,7 @@ permissions:
 jobs:
   research:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
       DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
       DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
@@ -61,7 +61,14 @@ jobs:
       - name: Copy normalized results
         if: success() && github.event_name != 'pull_request'
         run: |
-          find outputs -maxdepth 1 -type f \( -name '*.csv' -o -name '*.md' -o -name '*.json' \) -exec cp {} outputs/latest/ \;
+          RESULT_DIR=$(find outputs -mindepth 1 -maxdepth 1 -type d ! -name latest | sort | tail -1)
+          test -n "$RESULT_DIR" || (echo 'No timestamped result directory found' && exit 1)
+          cp "$RESULT_DIR"/niche_summary.csv outputs/latest/
+          cp "$RESULT_DIR"/keyword_metrics.csv outputs/latest/
+          cp "$RESULT_DIR"/rejected_keywords.csv outputs/latest/
+          cp "$RESULT_DIR"/serp_samples.json outputs/latest/
+          cp "$RESULT_DIR"/eval.json outputs/latest/
+          cp "$RESULT_DIR"/report.md outputs/latest/
       - name: Persist run status and latest results
         if: always() && github.event_name != 'pull_request'
         run: |
