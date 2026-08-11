@@ -1,0 +1,9 @@
+Market Family,Verdict,Priority,Leadable Search Volume,Weighted CPC,Max Bid,Scope,Candidate Buyer Types,Interpretation
+Agricultural finance,GO,1,13590,13.19,59.46,Equipment finance + land loans + operating credit,AgDirect; Farm Credit associations/EXPRESS; AgAmerica; American Farm Mortgage,Best account strategy: one lender can potentially buy several farmer finance intents.
+Farm & crop insurance,GO,2,27930,16.67,54.14,Farm/ranch P&C + crop insurance,Nationwide Agribusiness; COUNTRY Financial; large farm agencies; crop AIPs,Huge clean demand and mature insurance lead culture; split P&C vs crop compliance.
+Farm equipment sales,STRONG TEST,3,26960,1.56,14.95,Explicit commercial-ag equipment demand,Titan Machinery; RDO Equipment; other multi-state dealer groups,"Excellent buyer scale, but validate willingness to buy external PPL leads."
+Grain storage & handling,TEST,4,31680,1.89,15.42,"Bins, dryers and handling systems",Sukup / large dealer networks,Massive search pool and ticket size; unknown lead-price ceiling.
+Irrigation systems,TEST,5,14060,1.59,6.75,Center pivots and farm irrigation,Valley dealer network; Reinke National Accounts/dealers,Strong farmer-specific demand; likely requires OEM/network buyer.
+Farm buildings,TEST,6,2250,3.54,14.8,Farm buildings and equipment storage,Morton Buildings; multi-state post-frame builders,"Lower volume but quote-driven, high-ticket demand."
+Farm solar / energy,TEST,7,3050,10.98,15.24,Commercial farm solar,Commercial/ag solar EPC networks,"Good CPC and targeting, but policy/utility economics vary."
+Farm software,WATCH,8,2740,34.22,115.0,Farm management/accounting software,Enterprise farm-management SaaS vendors,Search economics look great; first validate ACV and qualified-demo value.
