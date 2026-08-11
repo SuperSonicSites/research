@@ -3,3 +3,4 @@ event=issues
 sha=6b6d708579dca699ad7c817d1ea0a8315f3508c4
 dataforseo_login_present=true
 dataforseo_password_present=true
+research_completed=true
