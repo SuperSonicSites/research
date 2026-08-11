@@ -44,6 +44,8 @@ jobs:
         run: |
           test -n "$DATAFORSEO_LOGIN" || (echo 'Missing DATAFORSEO_LOGIN secret' && exit 1)
           test -n "$DATAFORSEO_PASSWORD" || (echo 'Missing DATAFORSEO_PASSWORD secret' && exit 1)
+      - name: Quota cooldown
+        run: sleep 65
       - name: Run market research
         run: |
           python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
