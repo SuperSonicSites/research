@@ -38,22 +38,35 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -r requirements.txt
+      - name: Initialize diagnostics
+        run: |
+          mkdir -p outputs/latest
+          LOGIN_PRESENT=false
+          PASSWORD_PRESENT=false
+          test -n "$DATAFORSEO_LOGIN" && LOGIN_PRESENT=true || true
+          test -n "$DATAFORSEO_PASSWORD" && PASSWORD_PRESENT=true || true
+          printf 'run_id=%s\nevent=%s\nsha=%s\ndataforseo_login_present=%s\ndataforseo_password_present=%s\n' \
+            "$GITHUB_RUN_ID" "$GITHUB_EVENT_NAME" "$GITHUB_SHA" "$LOGIN_PRESENT" "$PASSWORD_PRESENT" > outputs/latest/run_status.txt
       - name: Validate secrets
         run: |
           test -n "$DATAFORSEO_LOGIN" || (echo 'Missing DATAFORSEO_LOGIN secret' && exit 1)
           test -n "$DATAFORSEO_PASSWORD" || (echo 'Missing DATAFORSEO_PASSWORD secret' && exit 1)
       - name: Run market research
-        run: python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
-      - name: Publish latest normalized results
-        if: github.event_name != 'pull_request'
         run: |
-          mkdir -p outputs/latest
+          python research.py --config "${{ github.event.inputs.config_path || 'configs/farmer_market.json' }}"
+          echo 'research_completed=true' >> outputs/latest/run_status.txt
+      - name: Copy normalized results
+        if: success() && github.event_name != 'pull_request'
+        run: |
           find outputs -maxdepth 1 -type f \( -name '*.csv' -o -name '*.md' -o -name '*.json' \) -exec cp {} outputs/latest/ \;
+      - name: Persist run status and latest results
+        if: always() && github.event_name != 'pull_request'
+        run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add outputs/latest
+          git add -f outputs/latest
           if ! git diff --cached --quiet; then
-            git commit -m 'Update latest market research results'
+            git commit -m 'Update latest market research status/results'
             git push
           fi
       - name: Upload results
