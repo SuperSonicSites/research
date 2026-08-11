@@ -9,6 +9,10 @@ on:
         default: configs/farmer_market.json
   issues:
     types: [opened]
+  push:
+    branches: [main]
+    paths:
+      - 'triggers/run.txt'
 
 concurrency:
   group: dataforseo-market-research
@@ -58,7 +62,6 @@ jobs:
           cp "$RESULT_DIR"/niche_summary.csv outputs/latest/
           cp "$RESULT_DIR"/keyword_metrics.csv outputs/latest/
           cp "$RESULT_DIR"/rejected_keywords.csv outputs/latest/
-          cp "$RESULT_DIR"/serp_samples.json outputs/latest/
           cp "$RESULT_DIR"/eval.json outputs/latest/
           cp "$RESULT_DIR"/report.md outputs/latest/
       - name: Persist run status and latest results
