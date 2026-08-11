@@ -76,8 +76,7 @@ def main():
         qual=sorted(set(qual)|set(seeds)); metrics=[]
         for b in range(0,len(qual),1000):
             payload=[{'keywords':qual[b:b+1000],'location_code':loc,'language_code':lang,'include_adult_keywords':False,'sort_by':'search_volume','tag':name}]
-            metrics.extend(extract_volume(api.post('keywords_data/google_ads/search_volume/live',payload,f'{idx:02d}_{name}_volume_{b//1000+1}')))
-            if b+1000<len(qual): time.sleep(5.2)
+            metrics.extend(extract_volume(api.post('keywords_data/google_ads/search_volume/live',payload,f'{idx:02d}_{name}_volume_{b//1000+1}'))); time.sleep(5.2)
         bykw={r['keyword']:r for r in metrics}; rows=[]
         for kw in qual:
             r=bykw.get(kw,{'keyword':kw,'search_volume':0,'cpc':0,'competition':None,'competition_index':0,'low_top_of_page_bid':0,'high_top_of_page_bid':0,'monthly_searches':[]}); intent='low' if info_re.search(kw) else ('high' if high_re.search(kw) else 'medium')
